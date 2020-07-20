@@ -1,0 +1,29 @@
+<!doctype html>
+<html ng-app="demoRouteApp">
+  <head>
+  	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <titleDemo&nbsp;AngularJS</title>
+	<script src="lib/angular/angular.js"></script>
+    <script src="lib/angular/angular-animate.js"></script>
+    <script src="lib/angular/angular-route.js"></script>
+    
+    <!-- loadingbar -->
+    <script src="js/libs/loading-bar/loading-bar.js"></script>
+    <link href="js/libs/loading-bar/loading-bar.css" rel="stylesheet" />
+    
+    <!-- toaster -->
+    <script src="js/libs/toaster/toaster.js"></script>
+    <link href="js/libs/toaster/toaster.css" rel="stylesheet" />
+    
+    <script src="js/demoRoute.js"></script>
+    <script src="js/controllersRoute.js"></script>
+  </head>
+  <body>
+  	<toaster-container toaster-options="{'time-out': 3000}"></toaster-container>
+  	<br /><br />
+    <a href="#/Member">รายชื่อสมาชิก</a> |
+    <a href="#/Register">สมัครสมาชิก</a> 
+    <br/>
+    <div ng-view></div>
+  </body>
+</html>

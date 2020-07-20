@@ -1,0 +1,26 @@
+<form name="memberForm" novalidate>
+    ชื่อ : <input type="text" name="name" ng-model="form.Name" required />
+    <!--<span ng-show="memberForm.name.$dirty && memberForm.name.$error.required">กรุณากรอกชื่อ</span>-->
+    <br />
+    นามสกุล : <input type="text" name="surname" ng-model="form.Surname" required />
+    <!--<span ng-show="memberForm.surname.$error.required">กรุณากรอกนามสกุล</span>-->
+    <br />
+    อีเมล : <input type="email" name="email" ng-model="form.Email" required />
+    <!--<span ng-show="memberForm.surname.$error.required">กรุณากรอกอีเมล</span>-->
+    <!--<span ng-show="memberForm.email.$error.email">กรุณากรอกอีเมลให้ถูกต้อง</span>-->
+    <br />
+    จังหวัด : 
+    <select ng-model="form.ProvinceId" ng-options="p.Id as p.Name for p in provinceForm" ng-change="changeProvince(form.ProvinceId)" required>
+        <option value="">-- เลือก --</option>
+    </select><br />
+    ตำบล : 
+    <select ng-model="form.DistrictId" ng-options="d.Id as d.Name for d in districtForm" ng-change="changeDistrict(form.DistrictId)" required>
+        <option value="">-- เลือก --</option>
+    </select><br />
+    อำเภอ : 
+    <select ng-model="form.SubDistrictId" ng-options="s.Id as s.Name for s in subDistrictForm" required>
+        <option value="">-- เลือก --</option>
+    </select><br />
+    <input type="button" ng-click="save()" ng-disabled="!memberForm.$valid" value="บันทึก" />
+    <input type="button" ng-click="reset()" value="ล้างข้อมูล" />
+</form>

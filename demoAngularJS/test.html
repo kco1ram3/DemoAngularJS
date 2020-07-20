@@ -1,0 +1,101 @@
+<!doctype html>
+<html ng-app>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<title>Test</title>
+		<script src="lib/angular/angular.js"></script>
+		<script>
+			function HelloController($scope){
+				$scope.yourInput = "Hello !!!";
+			}
+			
+			function ItemController($scope){
+				$scope.itemList = [
+					{id:1,name:'aaa'},
+					{id:2,name:'bbb'},
+					{id:3,name:'ccc'}
+				];
+			}
+			
+			function ProvinceController($scope, $http){
+				var webAPI = "http://localhost/DemoWebAPI/api/";
+
+				/*
+				$scope.ProvinceList = [
+					{id:1,name:'กรุงเทพฯ'},
+					{id:2,name:'นนทบุรี'},
+					{id:3,name:'ปราจีนบุรี'}
+				];	
+				*/
+
+				$http.get(webAPI + "Province").success(function (data) {
+					$scope.ProvinceList = data;
+				});
+
+				$scope.RowID_Province = 0;
+				
+				/*
+				$scope.DistrictList = [
+					{id:1,name:'district1_1',rowid_province:1},
+					{id:2,name:'district1_2',rowid_province:1},
+					{id:3,name:'district2_1',rowid_province:2},
+					{id:4,name:'district3_1',rowid_province:3}
+				];
+				*/
+
+				$http.get(webAPI + "District").success(function (data) {
+					$scope.DistrictList = data;
+				});
+
+				$scope.RowID_District = 0;
+				
+				$http.get(webAPI + "SubDistrict").success(function (data) {
+					$scope.SubDistrictList = data;
+				});
+
+				$scope.RowID_SubDistrict = 0;
+				
+				$scope.ClearData = function() {
+					$scope.RowID_District = 0;
+				}
+			}
+		</script>
+	</head>
+	<body>
+		<div ng-controller="HelloController">
+			<label>Input:</label>
+			<input type="text" ng-model="yourInput" placeholder="type your input">
+			<br/>
+			<h1>Your input is {{yourInput}} </h1>
+		</div>
+		<ul ng-controller="ItemController">
+			<li ng-repeat="item in itemList">
+				{{item.name}}
+			</li>
+		</ul>
+		<div ng-controller="ProvinceController">
+			จังหวัด
+			<select ng-model="RowID_Province" ng-change="RowID_District = 0; RowID_SubDistrict = 0;">
+				<option value="0">-- เลือก --</option>
+				<option ng-repeat="item in ProvinceList" value="{{item.Id}}">{{item.Name}}</option>
+			</select>
+			{{RowID_Province}}
+			<br />
+			ตำบล
+			<select ng-model="RowID_District">
+				<option value="0">-- เลือก --</option> 
+				<option ng-repeat="item in DistrictList | filter: {Pid:RowID_Province}" value="{{item.Id}}">{{item.Name}}</option>
+			</select>
+			{{RowID_District}}
+            <br />
+			อำเภอ
+			<select ng-model="RowID_SubDistrict">
+				<option value="0">-- เลือก --</option> 
+				<option ng-repeat="item in SubDistrictList | filter: {Did:RowID_District}" value="{{item.Id}}">{{item.Name}}</option>
+			</select>
+			{{RowID_SubDistrict}}
+		</div>
+	</body>
+</html>
+
+

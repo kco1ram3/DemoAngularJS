@@ -1,0 +1,80 @@
+<!doctype html>
+<html ng-app="demoApp">
+  <head>
+  	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <titleDemo&nbsp;AngularJS</title>
+	<script src="lib/angular/angular.js"></script>
+    <script src="lib/angular/angular-animate.js"></script>
+    
+    <!-- loadingbar -->
+    <script src="js/libs/loading-bar/loading-bar.js"></script>
+    <link href="js/libs/loading-bar/loading-bar.css" rel="stylesheet" />
+    
+    <!-- toaster -->
+    <script src="js/libs/toaster/toaster.js"></script>
+    <link href="js/libs/toaster/toaster.css" rel="stylesheet" />
+    
+    <script src="js/demo.js"></script>
+  </head>
+  <body ng-controller="demoController">
+  	<toaster-container toaster-options="{'time-out': 3000}"></toaster-container>
+  	<br /><br />
+    <form name="memberForm" novalidate>
+        ชื่อ : <input type="text" name="name" ng-model="form.Name" required />
+        <!--<span ng-show="memberForm.name.$dirty && memberForm.name.$error.required">กรุณากรอกชื่อ</span>-->
+        <br />
+        นามสกุล : <input type="text" name="surname" ng-model="form.Surname" required />
+        <!--<span ng-show="memberForm.surname.$error.required">กรุณากรอกนามสกุล</span>-->
+        <br />
+        อีเมล : <input type="email" name="email" ng-model="form.Email" required />
+        <!--<span ng-show="memberForm.surname.$error.required">กรุณากรอกอีเมล</span>-->
+        <!--<span ng-show="memberForm.email.$error.email">กรุณากรอกอีเมลให้ถูกต้อง</span>-->
+        <br />
+        จังหวัด : 
+        <select ng-model="form.ProvinceId" ng-options="p.Id as p.Name for p in provinceForm" ng-change="changeProvince(form.ProvinceId)" required>
+            <option value="">-- เลือก --</option>
+        </select><br />
+        ตำบล : 
+        <select ng-model="form.DistrictId" ng-options="d.Id as d.Name for d in districtForm" ng-change="changeDistrict(form.DistrictId)" required>
+            <option value="">-- เลือก --</option>
+        </select><br />
+        อำเภอ : 
+        <select ng-model="form.SubDistrictId" ng-options="s.Id as s.Name for s in subDistrictForm" required>
+            <option value="">-- เลือก --</option>
+        </select><br />
+        <input type="button" ng-click="save()" ng-disabled="!memberForm.$valid" value="บันทึก" />
+        <input type="button" ng-click="reset()" value="ล้างข้อมูล" />
+    </form>
+    <hr/>
+    <input type="search" ng-model="searchMember" placeholder="ค้นหาข้อมูล..." />
+    <table width="100%" border="1">
+    	<thead>
+        	<th>ลำดับ</th>
+        	<th>ชื่อ</th>
+            <th>นามสกุล</th>
+            <th>อีเมล</th>
+            <th>จังหวัด</th>
+            <th>ตำบล</th>
+            <th>อำเภอ</th>
+            <th></th>
+            <th></th>
+        </thead>
+    	<tr ng-repeat="m in members | filter:searchMember">
+        	<td>{{$index + 1}}</td>
+            <td>{{m.Name}}</td>
+            <td>{{m.Surname}}</td>
+            <td>{{m.Email}}</td>
+            <td>{{m.ProvinceId}}</td>
+            <td>{{m.DistrictId}}</td>
+            <td>{{m.SubDistrictId}}</td>
+            <td>
+            	<input type="button" ng-click="edit(m)" value="แก้ไข" />
+            </td>
+            <td>
+            	<input type="button" ng-click="delete(m.Id)" value="ลบ" />
+            </td>
+        </tr>
+    </table>
+    {{error}}
+  </body>
+</html>

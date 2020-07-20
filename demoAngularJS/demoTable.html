@@ -1,0 +1,108 @@
+<!doctype html>
+<html ng-app="demoTableApp">
+  <head>
+  	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <titleDemo&nbsp;AngularJS</title>
+	<script src="lib/angular/angular.js"></script>
+    <script src="lib/angular/angular-animate.js"></script>
+    
+    <!-- loadingbar -->
+    <script src="js/libs/loading-bar/loading-bar.js"></script>
+    <link href="js/libs/loading-bar/loading-bar.css" rel="stylesheet" />
+    
+    <!-- toaster -->
+    <script src="js/libs/toaster/toaster.js"></script>
+    <link href="js/libs/toaster/toaster.css" rel="stylesheet" />
+    
+    <script src="js/demoTable.js"></script>
+  </head>
+  <body ng-controller="demoTableController">
+  	<toaster-container toaster-options="{'time-out': 3000}"></toaster-container>
+  	<br /><br />
+    <input type="search" ng-model="searchMember" placeholder="ค้นหาข้อมูล..." />
+    <hr />
+    <table width="100%" border="1">
+    	<thead>
+        	<th>ลำดับ</th>
+        	<th>ชื่อ</th>
+            <th>นามสกุล</th>
+            <th>อีเมล</th>
+            <th>จังหวัด</th>
+            <th>ตำบล</th>
+            <th>อำเภอ</th>
+            <th></th>
+        </thead>
+        <tbody ng-repeat="m in members | filter:searchMember"> 
+        	<tr ng-if="editId === -1 || editId !== m.Id">
+                <td>{{$index + 1}}</td>
+                <td>{{m.Name}}</td>
+                <td>{{m.Surname}}</td>
+                <td>{{m.Email}}</td>
+                <td>{{m.ProvinceId}}</td>
+                <td>{{m.DistrictId}}</td>
+                <td>{{m.SubDistrictId}}</td>
+                <td>
+                    <input type="button" ng-click="edit(m)" value="แก้ไข" />
+                    <input type="button" ng-click="delete(m.Id)" value="ลบ" />
+                </td>
+            </tr>
+            <tr ng-form="editMemberForm" ng-if="editId === m.Id">
+            	<td></td>
+                <td><input type="text" name="name" ng-model="m.Name" required /></td>
+                <td><input type="text" name="surname" ng-model="m.Surname" required /></td>
+                <td><input type="email" name="email" ng-model="m.Email" required /></td>
+                <td>
+                	<select ng-model="m.ProvinceId" ng-options="p.Id as p.Name for p in provinceForm" ng-change="changeProvince(m.ProvinceId)" required>
+                        <option value="">-- เลือก --</option>
+                    </select>
+                </td>
+                <td>
+                	<select ng-model="m.DistrictId" ng-options="d.Id as d.Name for d in districtForm" ng-change="changeDistrict(m.DistrictId)" required>
+                        <option value="">-- เลือก --</option>
+                    </select>
+                </td>
+                <td>
+                	<select ng-model="m.SubDistrictId" ng-options="s.Id as s.Name for s in subDistrictForm" required>
+                        <option value="">-- เลือก --</option>
+                    </select>
+                </td>
+                <td>
+                    <input type="button" ng-click="save(m)" ng-disabled="!editMemberForm.$valid" value="บันทึก" />
+                    <input type="button" ng-click="cancel(m)" value="ยกเลิก" />
+                </td>
+            </tr>
+        </tbody>
+        <tfoot>
+        	<tr ng-form="addMemberForm">
+            	<td></td>
+                <td><input type="text" name="name" ng-model="addForm.Name" required /></td>
+                <td><input type="text" name="surname" ng-model="addForm.Surname" required /></td>
+                <td><input type="email" name="email" ng-model="addForm.Email" required /></td>
+                <td>
+                	<select ng-model="addForm.ProvinceId" ng-options="p.Id as p.Name for p in provinceForm" ng-change="changeProvince(addForm.ProvinceId)" required>
+                        <option value="">-- เลือก --</option>
+                    </select>
+                </td>
+                <td>
+                	<select ng-model="addForm.DistrictId" ng-options="d.Id as d.Name for d in districtForm" ng-change="changeDistrict(addForm.DistrictId)" required>
+                        <option value="">-- เลือก --</option>
+                    </select>
+                </td>
+                <td>
+                	<select ng-model="addForm.SubDistrictId" ng-options="s.Id as s.Name for s in subDistrictForm" required>
+                        <option value="">-- เลือก --</option>
+                    </select>
+                </td>
+                <td>
+                    <input type="button" ng-click="save(addForm)" ng-disabled="!addMemberForm.$valid" value="เพิ่มข้อมูล" />
+                </td>
+            </tr>
+        </tfoot>
+    </table>
+    addForm : {{addForm}}
+    <hr />
+    editFrom : {{editForm}}
+    <hr />
+    {{error}}
+  </body>
+</html>

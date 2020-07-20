@@ -1,0 +1,88 @@
+<!doctype html>
+<html ng-app="app">
+  <head>
+  	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <titleDemo&nbsp;AngularJS</title>
+	<script src="lib/angular/angular.js"></script>
+    <script src="lib/angular/angular-animate.js"></script>
+    <script src="lib/angular/angular-route.js"></script>
+    
+    <!-- loadingbar -->
+    <script src="js/libs/loading-bar/loading-bar.js"></script>
+    <link href="js/libs/loading-bar/loading-bar.css" rel="stylesheet" />
+    
+    <script src="js/app.js"></script>
+  </head>
+  <body ng-controller="HomeController">
+    <select ng-model="ddlFriends" ng-options="f.id as 'ชื่อ ' + f.name + ' อายุ ' + f.age + ' เพศ ' + f.gender for f in friends">
+    	<option></option>
+    </select>   
+    <br/>
+    รายการเพื่อนที่คุณเลือกคือ {{ddlFriends}}
+    <br/><br/>
+    I have {{friends.length}} friends. They are:
+    <input type="search" ng-model="q" placeholder="filter friends..." />
+    <ul>
+      <li ng-repeat="friend in friends | filter:q">
+        [{{$index + 1}}] {{friend.name}} who is {{friend.age}} years old.
+      </li>
+    </ul>
+    <hr/>
+    <select ng-model="selectedProvince" ng-change="changeProvince()">
+        <option value="0">-- เลือก --</option>
+        <option ng-repeat="p in province" value="{{p.id}}">{{p.name}}</option>
+    </select>
+    {{selectedProvince}}
+    <select ng-model="selectedDistrict" ng-options="d.id as d.name for d in district">
+        <option value="">-- เลือก --</option>
+    </select>
+    {{selectedDistrict}}
+    <hr/>
+    <select ng-model="ddlProvince" ng-change="changeProvinceAPI()">
+        <option value="0">-- เลือก --</option>
+        <option ng-repeat="p in provinceAPI" value="{{p.Id}}">{{p.Name}}</option>
+    </select>
+    <select ng-model="ddlDistrict" ng-change="changeDistrictAPI()">
+        <option value="0">-- เลือก --</option>
+        <option ng-repeat="d in districtAPI" value="{{d.Id}}">{{d.Name}}</option>
+    </select>
+    <select ng-model="ddlSubDistrict" ng-disabled="false">
+        <option value="0">-- เลือก --</option>
+        <option ng-repeat="s in subDistrictAPI" value="{{s.Id}}">{{s.Name}}</option>
+    </select>
+    <br />
+    จังหวัด : {{ddlProvince}}<br />
+    ตำบล : {{ddlDistrict}}<br />
+    อำเภอ : {{ddlSubDistrict}}<br />
+    <hr/>
+    <div ng-repeat="form in formData">
+        ชื่อ : <input type="text" ng-model="form.Name" /><br />
+        นามสกุล : <input type="text" ng-model="form.Surname" /><br />
+        อีเมล : <input type="email" ng-model="form.Email" /><br />
+        จังหวัด : 
+        <select ng-model="form.Province" ng-change="changeProvinceForm(form.Province)">
+            <option value="0">-- เลือก --</option>
+            <option ng-repeat="p in provinceForm" value="{{p.Id}}">{{p.Name}}</option>
+        </select><br />
+        ตำบล : 
+        <select ng-model="form.District" ng-change="changeDistrictForm(form.District)">
+            <option value="0">-- เลือก --</option>
+            <option ng-repeat="d in districtForm" value="{{d.Id}}">{{d.Name}}</option>
+        </select><br />
+        อำเภอ : 
+        <select ng-model="form.SubDistrict">
+            <option value="0">-- เลือก --</option>
+            <option ng-repeat="s in subDistrictForm" value="{{s.Id}}">{{s.Name}}</option>
+        </select><br />
+    </div>
+    {{formData}}
+    <hr/>
+    <input type="button" ng-click="start()" value="start" />
+    <input type="button" ng-click="complete()" value="complete" />
+    <hr/>
+    <a href="#/Member">รายชื่อสมาชิก</a> |
+    <a href="#/Register">สมัครสมาชิก</a> 
+    <br/>
+    <div ng-view></div>
+  </body>
+</html>

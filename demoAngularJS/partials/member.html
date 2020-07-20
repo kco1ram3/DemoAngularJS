@@ -1,0 +1,29 @@
+<input type="search" ng-model="searchMember" placeholder="ค้นหาข้อมูล..." />
+<table width="100%" border="1">
+    <thead>
+        <th>ลำดับ</th>
+        <th>ชื่อ</th>
+        <th>นามสกุล</th>
+        <th>อีเมล</th>
+        <th>จังหวัด</th>
+        <th>ตำบล</th>
+        <th>อำเภอ</th>
+        <th></th>
+        <th></th>
+    </thead>
+    <tr ng-repeat="m in members | filter:searchMember">
+        <td>{{$index + 1}}</td>
+        <td>{{m.Name}}</td>
+        <td>{{m.Surname}}</td>
+        <td>{{m.Email}}</td>
+        <td>{{m.ProvinceId}}</td>
+        <td>{{m.DistrictId}}</td>
+        <td>{{m.SubDistrictId}}</td>
+        <td>
+            <input type="button" ng-click="edit('/Member/' + m.Id)" value="แก้ไข" />
+        </td>
+        <td>
+            <input type="button" ng-click="delete(m.Id)" value="ลบ" />
+        </td>
+    </tr>
+</table>
